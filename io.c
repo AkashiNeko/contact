@@ -7,7 +7,7 @@ void pmenu()
 	printf("----------------------------\n");
 }
 
-void print_con(contact* pCon)
+void print_con(pcon pCon)
 {
 	int i = 0;
 	if (pCon->member == 0)
@@ -33,6 +33,21 @@ void print_con(contact* pCon)
 		printf(FR_DW);
 
 	}
+}
+
+void print_name(pcon pCon)
+{
+	assert(pCon->member);
+	int i = 0;
+	printf("┌─────┬───────┐\n");
+	printf("│ %-4s│ %-6s│\n", "序号", "姓名");
+	printf("├─────┼───────┤\n");
+	for (i = 0; i < pCon->member; i++)
+	{
+		printf("│ %-4d│ %-6s│\n", i + 1, pCon->data[i].name);
+	}
+	printf("└─────┴───────┘\n");
+
 }
 
 int is_zero(const char* str)
@@ -63,7 +78,7 @@ int input_num(int max)
 	}
 }
 
-int user_input(pInfo pNew)
+int user_input(pInfo pNew, const pcon pCon)
 {
 	char temp[64] = { 0 };
 	int space = 0;
@@ -73,7 +88,14 @@ int user_input(pInfo pNew)
 	scanf("%s", temp);
 	if (is_zero(temp))
 	{
-		printf("姓名无法留空。\n");
+		printf("\n姓名不能留空！\n");
+		return 0;
+	}
+	//将超长的内容截断
+	temp[NAME] = '\0';
+	if (is_name_repetition(temp, pCon))
+	{
+		printf("\n联系人 %s 已存在！\n", temp);
 		return 0;
 	}
 	CPY("姓名", name, NAME)
@@ -116,17 +138,22 @@ int user_input(pInfo pNew)
 
 void add_error()
 {
-	printf("\n无法新建空白联系人信息。\n");
+	printf("\n添加联系人失败。\n");
 	printf("* 是否重新添加？\n");
-	printf("-----------------------\n");
+	printf("------------------\n");
 	printf(" 1.确定   0.取消\n\n");
 }
 
-void add_succeed()
+void add_succeed(const pInfo pNew)
 {
-	printf("\n新建联系人成功。\n");
-	printf("* 是否继续添加？\n");
-	printf("-----------------------\n");
+	printf("新建联系人成功。\n");
+	PRINT_NEW(name, "%-12s", "姓名")
+	PRINT_NEW(sex, "%-6s", "性别")
+	PRINT_NEW(age, "%-6s", "年龄")
+	PRINT_NEW(tele, "%-12s", "电话")
+	PRINT_NEW(addr, "%-27s", "地址")
+	printf("\n* 是否继续添加？\n");
+	printf("-----------------\n");
 	printf(" 1.确定   0.返回\n\n");
 }
 
@@ -136,4 +163,11 @@ void del_blank()
 	printf("* 是否添加新的联系人？\n");
 	printf("-----------------------\n");
 	printf(" 1.添加   0.取消\n\n");
+}
+
+void del_select()
+{
+	printf("\n选择要删除的联系人\n\n");
+	printf("* 输入联系人的序号（0.取消）\n");
+	printf("----------------------------\n");
 }

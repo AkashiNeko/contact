@@ -1,0 +1,9 @@
+# 文件夹
+Debug/
+Release/
+x64/
+image/
+.vs/
+
+# 文件
+*.exe

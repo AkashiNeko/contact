@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 //#define _DEBUG_
 
@@ -22,6 +23,12 @@ if(is_zero(pCon->data[i].m))\
 	printf("│ "f, " ");\
 else\
 	printf("│ "f, pCon->data[i].m);
+
+#define PRINT_NEW(m, f, text) \
+if(is_zero(pNew->m))\
+	printf("\n"text": "f"\n", " ");\
+else\
+	printf("\n"text": "f"\n", pNew->m);
 
 //成员信息输入过长
 #define CPY(text, m, len) \
@@ -69,7 +76,7 @@ typedef struct con
 	pInfo data;
 	int member;
 	int max;
-}contact;
+}contact, * pcon;
 
 /********************* io.c 函数定义 *********************/
 
@@ -77,7 +84,10 @@ typedef struct con
 void pmenu();
 
 //打印所有联系人
-void print_con(contact* pCon);
+void print_con(pcon pCon);
+
+//打印所有联系人的名字（带序号）
+void print_name(pcon pCon);
 
 //判断字符串是否为"0"
 int is_zero(const char* str);
@@ -86,32 +96,41 @@ int is_zero(const char* str);
 int input_num(int max);
 
 //用户输入联系人信息
-int user_input(pInfo pNew);
+int user_input(pInfo pNew, const pcon pCon);
 
 //添加失败
 void add_error();
 
 //添加成功
-void add_succeed();
+void add_succeed(const pInfo pNew);
 
 //删除空白通讯录
 void del_blank();
 
+//选择删除对象
+void del_select();
+
 /****************** contact.c 函数定义 *******************/
 
 //读文件
-FILE* file();
+FILE* file(int new);
 
 //扩容
-void check_max(contact* pCon);
+void check_max(pcon pCon);
 
 //初始化通讯录
-void init_con(contact* pCon);
+void init_con(pcon pCon);
 
 //添加联系人
-void add_con(contact* pCon);
+void add_con(pcon pCon);
+
+//判断要添加的联系人是否已存在
+int is_name_repetition(const char* name, const pcon pCon);
 
 //删除联系人
-void del_con(contact* pCon);
+void del_con(pcon pCon);
+
+//重新写入到文件
+void to_file(pcon pCon, int except);
 
 #endif
