@@ -30,8 +30,10 @@ int main()
 			del_con(&con);
 			break;
 		case SEARCH:
+			serc_con(&con);
 			break;
 		case MODIFY:
+			mdf_con(&con);
 			break;
 		case SORT:
 			break;

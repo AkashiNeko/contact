@@ -9,7 +9,7 @@
 #include <string.h>
 #include <assert.h>
 
-//#define _DEBUG_
+#define _DEBUG_
 
 //清屏
 #define CLS system("cls")
@@ -19,10 +19,10 @@
 
 //打印联系人信息
 #define PRINT_MEM(m, f) \
-if(is_zero(pCon->data[i].m))\
+if(is_zero(m))\
 	printf("│ "f, " ");\
 else\
-	printf("│ "f, pCon->data[i].m);
+	printf("│ "f, m);
 
 #define PRINT_NEW(m, f, text) \
 if(is_zero(pNew->m))\
@@ -78,16 +78,24 @@ typedef struct con
 	int max;
 }contact, * pcon;
 
-/********************* io.c 函数定义 *********************/
+/******************** file.c 函数定义 ********************/
 
-//打印菜单
-void pmenu();
+//读文件
+FILE* file(int mode);
+
+//重新写入到文件
+void to_file(pcon pCon, int except);
+
+/********************* io.c 函数定义 *********************/
 
 //打印所有联系人
 void print_con(pcon pCon);
 
 //打印所有联系人的名字（带序号）
 void print_name(pcon pCon);
+
+//打印单个成员表格
+void print_peo(info peo);
 
 //判断字符串是否为"0"
 int is_zero(const char* str);
@@ -98,6 +106,11 @@ int input_num(int max);
 //用户输入联系人信息
 int user_input(pInfo pNew, const pcon pCon);
 
+/******************** tips.c 函数定义 ********************/
+
+//打印菜单
+void pmenu();
+
 //添加失败
 void add_error();
 
@@ -105,15 +118,21 @@ void add_error();
 void add_succeed(const pInfo pNew);
 
 //删除空白通讯录
-void del_blank();
+void blank();
 
 //选择删除对象
 void del_select();
 
-/****************** contact.c 函数定义 *******************/
+//确认删除
+int del_confirm(const info peo);
 
-//读文件
-FILE* file(int new);
+//搜索不到结果
+void serc_none();
+
+//找到了
+void serc_found();
+
+/****************** contact.c 函数定义 *******************/
 
 //扩容
 void check_max(pcon pCon);
@@ -127,10 +146,16 @@ void add_con(pcon pCon);
 //判断要添加的联系人是否已存在
 int is_name_repetition(const char* name, const pcon pCon);
 
+//通讯录为空
+int is_blank(pcon pCon);
+
 //删除联系人
 void del_con(pcon pCon);
 
-//重新写入到文件
-void to_file(pcon pCon, int except);
+//搜索联系人
+void serc_con(pcon pCon);
+
+//修改联系人
+void mdf_con(pcon pCon);
 
 #endif

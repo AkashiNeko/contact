@@ -1,37 +1,8 @@
 #include "contact.h"
 
-FILE* file(int new)
-{
-	FILE* pf = NULL;
-	if (new)
-	{
-		pf = fopen("contact.dat", "w+");
-	}
-	else
-	{
-		pf = fopen("contact.dat", "r+");
-		if (pf == NULL)
-		{
-			pf = fopen("contact.dat", "w+");
-		}
-	}
-
-	//创建文件失败
-	if (pf == NULL)
-	{
-		CLS;
-		perror("ERROR: file \"contact.dat\"");
-		exit(114514);
-	}
-	return pf;
-}
-
-void add(pcon con)
-{
-}
-
 void check_max(pcon pCon)
 {
+	//扩容
 	pCon->max += 3;
 	pInfo ptr = (pInfo)realloc(pCon->data, pCon->max * sizeof(info));
 	if (ptr == NULL)
@@ -42,10 +13,11 @@ void check_max(pcon pCon)
 		exit(114514);
 	}
 	pCon->data = ptr;
-}
+} // check_max
 
 void init_con(pcon pCon)
 {
+	//初始化通讯录
 	int scf_ret;
 	FILE* pf = file(0);
 	//初始容量
@@ -81,10 +53,11 @@ void init_con(pcon pCon)
 			check_max(pCon);
 	} while (1);
 	fclose(pf);
-}
+} // init_con
 
 void add_con(pcon pCon)
 {
+	//添加联系人
 	info new = { 0 };
 	int ret = 0;
 	int loop = 1;
@@ -101,8 +74,7 @@ void add_con(pcon pCon)
 			CLS;
 			add_succeed(&new);
 			//写入文件中
-			FILE* pf = file(0);
-			fseek(pf, 0, SEEK_END);
+			FILE* pf = file(2);
 			fprintf(pf, "%s %s %s %s %s\n",
 				new.name, new.sex, new.age, new.tele, new.addr
 			);
@@ -126,10 +98,11 @@ void add_con(pcon pCon)
 			break;
 		}
 	}
-}
+} // add_con
 
 int is_name_repetition(const char* name, const pcon pCon)
 {
+	//判断输入的姓名是否已存在
 	int i = 0;
 	for (i = 0; i < pCon->member; i++)
 	{
@@ -138,29 +111,31 @@ int is_name_repetition(const char* name, const pcon pCon)
 			return 1;
 	}
 	return 0;
+} // is_name_repetition
+
+int is_blank(pcon pCon)
+{
+	if (pCon->member == 0)
+	{
+		blank();
+		if (input_num(1))
+			add_con(pCon);
+		return 1;
+	}	
+	return 0;
 }
 
 void del_con(pcon pCon)
 {
+	//删除联系人
 	int select = -1;
 	CLS;
 	printf(">> 删除联系人\n\n");
 	//通讯录为空时
-	if (pCon->member == 0)
+	if (is_blank(pCon))
 	{
-		del_blank();
-		select = input_num(1);
-		switch (select)
-		{
-		case 1:
-			add_con(pCon);
-			return;
-		case 0:
-			CLS;
-			return;
-		default:
-			break;
-		}
+		CLS;
+		return;
 	}
 	print_name(pCon);
 	del_select();
@@ -170,26 +145,77 @@ void del_con(pcon pCon)
 		CLS;
 		return;
 	}
-	//重新写入到文件
-	to_file(pCon, select - 1);
+	//确认删除
+	if (del_confirm(pCon->data[select - 1]))
+		//重新写入到文件
+		to_file(pCon, select - 1);
+	CLS;
+} // del_con
+
+void serc_con(pcon pCon)
+{
+	//搜索联系人
+	int i, count;
+	char str[32];
+	char c;
+	do
+	{
+		int exist = 0;
+		CLS;
+		printf(">> 搜索联系人\n\n");
+		//通讯录为空时
+		if (is_blank(pCon))
+		{
+			CLS;
+			return;
+		}
+		printf("输入要搜索的内容:> ");
+		scanf("%s", str);
+		str[ADDR - 1] = '\0';
+		//清空缓冲区
+		while ((c = getchar()) != EOF && c != '\n');
+
+		for (i = 0; i < pCon->member; i++)
+		{
+			if (
+				strstr(pCon->data[i].name, str) != NULL ||
+				strstr(pCon->data[i].sex, str) != NULL ||
+				strstr(pCon->data[i].age, str) != NULL ||
+				strstr(pCon->data[i].tele, str) != NULL ||
+				strstr(pCon->data[i].addr, str) != NULL)
+			{
+				//找到了
+				if (exist == 0)
+				{
+					printf(FR_UP);
+					printf(FORMAT, "姓名", "年龄", "性别", "电话", "地址");
+					printf(FR_MD);
+				}
+				exist++;
+				PRINT_MEM(pCon->data[i].name, "%-12s");
+				PRINT_MEM(pCon->data[i].sex, "%-6s");
+				PRINT_MEM(pCon->data[i].age, "%-6s");
+				PRINT_MEM(pCon->data[i].tele, "%-12s");
+				PRINT_MEM(pCon->data[i].addr, "%-27s");
+				printf("│\n");
+			}
+		}
+		if (exist)
+		{
+			printf(FR_DW);
+			printf("\n>> 关键词: %s\n\n", str);
+			printf("共找到以上 %d 个结果\n", exist);
+			serc_found();
+		}
+		else
+		{
+			serc_none();
+		}
+	} while (input_num(1));
 	CLS;
 }
 
-void to_file(pcon pCon, int except)
+void mdf_con(pcon pCon)
 {
-	//将除了下标为except之外的联系人写入到一个新文件中
-	FILE* pf = file(1);
-	int i = 0;
-	for (i = 0; i < pCon->member; i++)
-	{
-		if (i == except)
-			continue;
-		fprintf(pf, "%s %s %s %s %s\n",
-			pCon->data[i].name,
-			pCon->data[i].sex,
-			pCon->data[i].age,
-			pCon->data[i].tele,
-			pCon->data[i].addr
-		);
-	}
+
 }

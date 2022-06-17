@@ -140,8 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="contact.c" />
+    <ClCompile Include="file.c" />
     <ClCompile Include="io.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="tips.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="contact.h" />

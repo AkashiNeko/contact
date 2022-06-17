@@ -1,12 +1,5 @@
 #include "contact.h"
 
-void pmenu()
-{
-	printf("  1.添加   2.删除   3.搜索\n");
-	printf("  4.修改   5.排序   0.退出\n");
-	printf("----------------------------\n");
-}
-
 void print_con(pcon pCon)
 {
 	int i = 0;
@@ -23,17 +16,17 @@ void print_con(pcon pCon)
 		printf(FR_MD);
 		for (i = 0; i < pCon->member; i++)
 		{
-			PRINT_MEM(name, "%-12s");
-			PRINT_MEM(sex, "%-6s");
-			PRINT_MEM(age, "%-6s");
-			PRINT_MEM(tele, "%-12s");
-			PRINT_MEM(addr, "%-27s");
+			PRINT_MEM(pCon->data[i].name, "%-12s");
+			PRINT_MEM(pCon->data[i].sex, "%-6s");
+			PRINT_MEM(pCon->data[i].age, "%-6s");
+			PRINT_MEM(pCon->data[i].tele, "%-12s");
+			PRINT_MEM(pCon->data[i].addr, "%-27s");
 			printf("│\n");
 		}
 		printf(FR_DW);
 
 	}
-}
+} // print_con
 
 void print_name(pcon pCon)
 {
@@ -47,8 +40,21 @@ void print_name(pcon pCon)
 		printf("│ %-4d│ %-6s│\n", i + 1, pCon->data[i].name);
 	}
 	printf("└─────┴───────┘\n");
+} // print_name
 
-}
+void print_peo(info peo)
+{
+	printf(FR_UP);
+	printf(FORMAT, "姓名", "年龄", "性别", "电话", "地址");
+	printf(FR_MD);
+	PRINT_MEM(peo.name, "%-12s");
+	PRINT_MEM(peo.sex, "%-6s");
+	PRINT_MEM(peo.age, "%-6s");
+	PRINT_MEM(peo.tele, "%-12s");
+	PRINT_MEM(peo.addr, "%-27s");
+	printf("│\n");
+	printf(FR_DW);
+} // print_peo
 
 int is_zero(const char* str)
 {
@@ -56,7 +62,7 @@ int is_zero(const char* str)
 		return 1;
 	else
 		return 0;
-}
+} // is_zero
 
 int input_num(int max)
 {
@@ -76,7 +82,7 @@ int input_num(int max)
 			return select;
 		printf("   select error!\n\n reselect:> ");
 	}
-}
+} // input_num
 
 int user_input(pInfo pNew, const pcon pCon)
 {
@@ -99,7 +105,6 @@ int user_input(pInfo pNew, const pcon pCon)
 		return 0;
 	}
 	CPY("姓名", name, NAME)
-
 
 	printf("\n输入性别:> ");
 	scanf("%s", temp);
@@ -134,40 +139,5 @@ int user_input(pInfo pNew, const pcon pCon)
 	CPY("地址", addr, ADDR)
 
 	return 1;
-}
+} // user_input
 
-void add_error()
-{
-	printf("\n添加联系人失败。\n");
-	printf("* 是否重新添加？\n");
-	printf("------------------\n");
-	printf(" 1.确定   0.取消\n\n");
-}
-
-void add_succeed(const pInfo pNew)
-{
-	printf("新建联系人成功。\n");
-	PRINT_NEW(name, "%-12s", "姓名")
-	PRINT_NEW(sex, "%-6s", "性别")
-	PRINT_NEW(age, "%-6s", "年龄")
-	PRINT_NEW(tele, "%-12s", "电话")
-	PRINT_NEW(addr, "%-27s", "地址")
-	printf("\n* 是否继续添加？\n");
-	printf("-----------------\n");
-	printf(" 1.确定   0.返回\n\n");
-}
-
-void del_blank()
-{
-	printf("当前通讯录为空。\n\n");
-	printf("* 是否添加新的联系人？\n");
-	printf("-----------------------\n");
-	printf(" 1.添加   0.取消\n\n");
-}
-
-void del_select()
-{
-	printf("\n选择要删除的联系人\n\n");
-	printf("* 输入联系人的序号（0.取消）\n");
-	printf("----------------------------\n");
-}
