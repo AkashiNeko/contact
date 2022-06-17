@@ -30,6 +30,9 @@
     <ClCompile Include="tips.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="subpro.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="contact.h">

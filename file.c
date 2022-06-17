@@ -35,14 +35,14 @@ FILE* file(int mode)
 	return pf;
 } // file
 
-void to_file(pcon pCon, int except)
+void to_file(pcon pCon, pInfo except)
 {
-	//将除了下标为except之外的联系人写入到一个新文件中
+	//将除了地址为except之外的联系人写入到一个新文件中
 	FILE* pf = file(1);
 	int i = 0;
 	for (i = 0; i < pCon->member; i++)
 	{
-		if (i == except)
+		if (pCon->data + i == except)
 			continue;
 		fprintf(pf, "%s %s %s %s %s\n",
 			pCon->data[i].name,

@@ -1,25 +1,16 @@
 #include "contact.h"
 
-void check_max(pcon pCon)
-{
-	//扩容
-	pCon->max += 3;
-	pInfo ptr = (pInfo)realloc(pCon->data, pCon->max * sizeof(info));
-	if (ptr == NULL)
-	{
-		//扩容失败
-		CLS;
-		perror("ERROR: realloc");
-		exit(114514);
-	}
-	pCon->data = ptr;
-} // check_max
-
 void init_con(pcon pCon)
 {
 	//初始化通讯录
 	int scf_ret;
 	FILE* pf = file(0);
+	//如果存有上一次的数据
+	if (pCon->data != NULL)
+	{
+		free(pCon->data);
+		pCon->data = NULL;
+	}
 	//初始容量
 	pCon->max = 5;
 	//初始成员数
@@ -67,7 +58,7 @@ void add_con(pcon pCon)
 		CLS;
 		printf(">> 新建联系人\n\n");
 		//用户输入联系人信息
-		ret = user_input(&new, pCon);
+		ret = add_input(&new, pCon);
 		if (ret)
 		{
 			//输入格式正确
@@ -100,68 +91,83 @@ void add_con(pcon pCon)
 	}
 } // add_con
 
-int is_name_repetition(const char* name, const pcon pCon)
-{
-	//判断输入的姓名是否已存在
-	int i = 0;
-	for (i = 0; i < pCon->member; i++)
-	{
-		//查找姓名是否已存在
-		if (strcmp(name, pCon->data[i].name) == 0)
-			return 1;
-	}
-	return 0;
-} // is_name_repetition
-
-int is_blank(pcon pCon)
-{
-	if (pCon->member == 0)
-	{
-		blank();
-		if (input_num(1))
-			add_con(pCon);
-		return 1;
-	}	
-	return 0;
-}
-
 void del_con(pcon pCon)
 {
-	//删除联系人
 	int select = -1;
-	CLS;
-	printf(">> 删除联系人\n\n");
-	//通讯录为空时
-	if (is_blank(pCon))
+	int ret;
+	char str[32];
+	char c;
+	pInfo* arr = NULL;
+	do
 	{
 		CLS;
-		return;
-	}
-	print_name(pCon);
-	del_select();
-	select = input_num(pCon->member);
-	if (select == 0)
-	{
-		CLS;
-		return;
-	}
-	//确认删除
-	if (del_confirm(pCon->data[select - 1]))
-		//重新写入到文件
-		to_file(pCon, select - 1);
+		if (arr != NULL)
+		{
+			free(arr);
+			arr = NULL;
+		}
+		printf(">> 删除联系人\n\n");
+		//通讯录为空时
+		if (is_blank(pCon))
+		{
+			CLS;
+			return;
+		}
+		printf("* 输入要删除的联系人信息:> ");
+		scanf("%s", str);
+		str[ADDR - 1] = '\0';
+		//清空缓冲区
+		while ((c = getchar()) != EOF && c != '\n');
+		//查找
+		ret = search(pCon, str, &arr);
+		if (ret)
+		{
+			//只找到一个联系人
+			if (ret == 1)
+			{
+				if (del_confirm(*arr[0]))
+					//重新写入到文件
+					to_file(pCon, arr[0]);
+				break;
+			}
+			//找到多个联系人，用户选择修改对象
+			print_serial(arr, ret);
+			printf("\n匹配到以上 %d 个结果\n", ret);
+			del_select();
+			select = input_num(ret);
+			if (select == 0)
+				break;
+			//修改信息
+			if (del_confirm(*arr[select - 1]))
+				//重新写入到文件
+				to_file(pCon, arr[select - 1]);
+			break;
+		}
+		else
+		{
+			//找不到
+			mdf_none();
+		}
+	} while (input_num(1));
+	free(arr);
 	CLS;
 } // del_con
 
 void serc_con(pcon pCon)
 {
 	//搜索联系人
-	int i, count;
+	int ret;
 	char str[32];
 	char c;
+	pInfo* arr = NULL;
 	do
 	{
-		int exist = 0;
 		CLS;
+		if (arr != NULL)
+		{
+			free(arr);
+			arr = NULL;
+		}
 		printf(">> 搜索联系人\n\n");
 		//通讯录为空时
 		if (is_blank(pCon))
@@ -169,53 +175,112 @@ void serc_con(pcon pCon)
 			CLS;
 			return;
 		}
-		printf("输入要搜索的内容:> ");
+		printf("* 输入要搜索的内容:> ");
 		scanf("%s", str);
 		str[ADDR - 1] = '\0';
 		//清空缓冲区
 		while ((c = getchar()) != EOF && c != '\n');
-
-		for (i = 0; i < pCon->member; i++)
+		//查找
+		ret = search(pCon, str, &arr);
+		if (ret)
 		{
-			if (
-				strstr(pCon->data[i].name, str) != NULL ||
-				strstr(pCon->data[i].sex, str) != NULL ||
-				strstr(pCon->data[i].age, str) != NULL ||
-				strstr(pCon->data[i].tele, str) != NULL ||
-				strstr(pCon->data[i].addr, str) != NULL)
-			{
-				//找到了
-				if (exist == 0)
-				{
-					printf(FR_UP);
-					printf(FORMAT, "姓名", "年龄", "性别", "电话", "地址");
-					printf(FR_MD);
-				}
-				exist++;
-				PRINT_MEM(pCon->data[i].name, "%-12s");
-				PRINT_MEM(pCon->data[i].sex, "%-6s");
-				PRINT_MEM(pCon->data[i].age, "%-6s");
-				PRINT_MEM(pCon->data[i].tele, "%-12s");
-				PRINT_MEM(pCon->data[i].addr, "%-27s");
-				printf("│\n");
-			}
-		}
-		if (exist)
-		{
-			printf(FR_DW);
+			//找到了
+			print_serial(arr, ret);
 			printf("\n>> 关键词: %s\n\n", str);
-			printf("共找到以上 %d 个结果\n", exist);
+			printf("共找到以上 %d 个结果\n", ret);
 			serc_found();
 		}
 		else
 		{
+			//找不到
 			serc_none();
 		}
 	} while (input_num(1));
+	free(arr);
 	CLS;
-}
+} // serc_con
 
 void mdf_con(pcon pCon)
 {
+	//修改联系人
+	int ret;
+	char str[32];
+	char c;
+	pInfo* arr = NULL;
+	do
+	{
+		if (arr != NULL)
+		{
+			free(arr);
+			arr = NULL;
+		}
+		int select;
+		CLS;
+		printf(">> 修改联系人\n\n");
+		//通讯录为空时
+		if (is_blank(pCon))
+		{
+			CLS;
+			return;
+		}
+		printf("* 输入要修改的联系人信息:> ");
+		scanf("%s", str);
+		str[ADDR - 1] = '\0';
+		//清空缓冲区
+		while ((c = getchar()) != EOF && c != '\n');
+		//查找
+		ret = search(pCon, str, &arr);
+		if (ret)
+		{
+			//只找到一个联系人
+			if (ret == 1)
+			{
+				modify(arr[0], pCon);
+				break;
+			}
+			//找到多个联系人，用户选择修改对象
+			print_serial(arr, ret);
+			printf("\n匹配到以上 %d 个结果\n", ret);
+			mdf_found();
+			select = input_num(ret);
+			if (select == 0)
+				break;
+			//修改信息
+			modify(arr[select - 1], pCon);
+			break;
+		}
+		else
+		{
+			//找不到
+			mdf_none();
+		}
+	} while (input_num(1));
+	free(arr);
+	CLS;
+} // mdf_con
 
-}
+void sort_con(pcon pCon)
+{
+	//排序联系人
+	int ret;
+	char c;
+	int select;
+	int (*pf[5])(const pInfo, const pInfo) = {
+		cmp_name, cmp_sex, cmp_age, cmp_tele, cmp_addr
+	};
+	CLS;
+	printf(">> 排序联系人\n\n");
+	//通讯录为空时
+	if (is_blank(pCon))
+	{
+		CLS;
+		return;
+	}
+	sort_sel();
+	select = input_num(5);
+	if (select == 0)
+		return;
+	qsort(pCon->data, pCon->member, sizeof(info), pf[select - 1]);
+	to_file(pCon, NULL);
+	CLS;
+} // sort_con

@@ -1,9 +1,19 @@
+//-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+//
+//    date:   2022-6-16
+//    author: Akashi (·ú·ú)
+//    github: https://github.com/AkashiNeko/snake
+//    QQ:     1006554341
+//
+//-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
 #include "contact.h"
 
 int main()
 {
 	option select;
 	contact con;
+	con.data = NULL;
 	TITLE;
 	//ÓÃ»§Ñ¡Ôñ
 	do
@@ -22,6 +32,7 @@ int main()
 		{
 		case EXIT:
 			CLS;
+			free(con.data);
 			return 0;
 		case ADD:
 			add_con(&con);
@@ -36,9 +47,9 @@ int main()
 			mdf_con(&con);
 			break;
 		case SORT:
+			sort_con(&con);
 			break;
 		default:
-			printf("select error!\n\nre");
 			break;
 		}
 	} while (1);
