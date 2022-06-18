@@ -2,12 +2,12 @@
 
 void check_max(pcon pCon)
 {
-	//À©Èİ
+	//æ‰©å®¹
 	pCon->max *= 2;
 	pInfo ptr = (pInfo)realloc(pCon->data, pCon->max * sizeof(info));
 	if (ptr == NULL)
 	{
-		//À©ÈİÊ§°Ü
+		//æ‰©å®¹å¤±è´¥
 		CLS;
 		perror("ERROR: realloc");
 		exit(114514);
@@ -17,11 +17,11 @@ void check_max(pcon pCon)
 
 int is_name_repetition(const char* name, const pcon pCon)
 {
-	//ÅĞ¶ÏÊäÈëµÄĞÕÃûÊÇ·ñÒÑ´æÔÚ
+	//åˆ¤æ–­è¾“å…¥çš„å§“åæ˜¯å¦å·²å­˜åœ¨
 	int i = 0;
 	for (i = 0; i < pCon->member; i++)
 	{
-		//²éÕÒĞÕÃûÊÇ·ñÒÑ´æÔÚ
+		//æŸ¥æ‰¾å§“åæ˜¯å¦å·²å­˜åœ¨
 		if (strcmp(name, pCon->data[i].name) == 0)
 			return 1;
 	}
@@ -44,7 +44,7 @@ int search(pcon pCon, char* str, pInfo** pArr)
 {
 	int i;
 	int index = 0;
-	int arr_max = 5;
+	int arr_max = 4;
 	int exist = 0;
 	*pArr = (pInfo*)malloc(arr_max * sizeof(pInfo*));
 	if (*pArr == NULL)
@@ -62,12 +62,12 @@ int search(pcon pCon, char* str, pInfo** pArr)
 			strstr(pCon->data[i].tele, str) != NULL ||
 			strstr(pCon->data[i].addr, str) != NULL)
 		{
-			//ÕÒµ½ÁË
+			//æ‰¾åˆ°äº†
 			exist++;
 			(*pArr)[index] = &(pCon->data[i]);
 			if (++index == arr_max)
 			{
-				arr_max += 3;
+				arr_max *= 2;
 				pInfo* temp = (pInfo*)realloc(*pArr, arr_max * sizeof(pInfo*));
 				if (temp == NULL)
 				{
@@ -99,13 +99,13 @@ void modify(pInfo peo, const pcon pCon)
 		mdf_sel();
 		if (nam_ret == 0)
 		{
-			printf("ĞÕÃûĞŞ¸ÄÊ§°Ü¡£\n");
-			printf("Çë¼ì²éÊäÈëÊÇ·ñÒÑ¾­´æÔÚ»òÁô¿Õ\n\n");
+			printf("å§“åä¿®æ”¹å¤±è´¥ã€‚\n");
+			printf("è¯·æ£€æŸ¥è¾“å…¥æ˜¯å¦å·²ç»å­˜åœ¨æˆ–ç•™ç©º\n\n");
 		}
 		nam_ret = 1;
 		ret = input_num(5);
 		if (ret == 0)
-			//Ğ´Èëµ½ÎÄ¼ş
+			//å†™å…¥åˆ°æ–‡ä»¶
 			to_file(pCon, NULL);
 		else if (ret == 1)
 			nam_ret = name_input(peo, pCon);
