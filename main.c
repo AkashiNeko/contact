@@ -2,7 +2,7 @@
 //
 //    date:   2022-6-16
 //    author: Akashi (·ú·ú)
-//    github: https://github.com/AkashiNeko/snake
+//    github: https://github.com/AkashiNeko/contact
 //    QQ:     1006554341
 //
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-

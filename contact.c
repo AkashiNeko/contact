@@ -5,6 +5,7 @@ void init_con(pcon pCon)
 	//初始化通讯录
 	int scf_ret;
 	FILE* pf = file(0);
+	printf("读取联系人信息中...\n");
 	//如果存有上一次的数据
 	if (pCon->data != NULL)
 	{
@@ -36,14 +37,13 @@ void init_con(pcon pCon)
 		);
 		//读取到文件末尾
 		if (scf_ret != 5)
-		{
 			break;
-		}
 		//通讯录成员达到上限则扩容
 		if (++pCon->member == pCon->max)
 			check_max(pCon);
 	} while (1);
 	fclose(pf);
+	CLS;
 } // init_con
 
 void add_con(pcon pCon)
@@ -53,7 +53,7 @@ void add_con(pcon pCon)
 	int ret = 0;
 	int loop = 1;
 	int select = 1;
-	while(1)
+	do
 	{
 		CLS;
 		printf(">> 新建联系人\n\n");
@@ -76,19 +76,8 @@ void add_con(pcon pCon)
 			//输入格式错误
 			add_error();
 		}
-		//选择是否重新输入
-		select = input_num(1);
-		switch (select)
-		{
-		case 1:
-			continue;
-		case 0:
-			CLS;
-			return;
-		default:
-			break;
-		}
-	}
+	} while (input_num(1));
+	CLS;
 } // add_con
 
 void del_con(pcon pCon)
@@ -286,6 +275,7 @@ void sort_con(pcon pCon)
 	select = input_num(5);
 	if (select == 0)
 		return;
+	printf("\n正在排序中...");
 	qsort(pCon->data, pCon->member, sizeof(info), pf[select - 1]);
 	to_file(pCon, NULL);
 	CLS;
