@@ -2,9 +2,9 @@
 
 * 可以和文件交互
 * 可以模糊搜索联系人信息
-* 理论上可以无限存联系人 *~~（只要你的内存堆区足够大qwq）~~*
+* 理论上可以无限存联系人 *(~~只要你的内存堆区足够大~~)*
 
-> 搜索和排序速度还是比较快的ovo
+> 搜索和排序速度还是比较快的qwq
 
 ![0](https://user-images.githubusercontent.com/54425164/174436057-e6a02ee3-1277-4892-8397-ee10e22c711b.png)
 ![1](https://user-images.githubusercontent.com/54425164/174436056-3da17fb3-33c4-41bb-9bc2-7683cb149c32.png)
