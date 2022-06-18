@@ -12,7 +12,7 @@ void init_con(pcon pCon)
 		pCon->data = NULL;
 	}
 	//初始容量
-	pCon->max = 5;
+	pCon->max = 4;
 	//初始成员数
 	pCon->member = 0;
 	//开辟内存空间
@@ -131,8 +131,10 @@ void del_con(pcon pCon)
 				break;
 			}
 			//找到多个联系人，用户选择修改对象
-			print_serial(arr, ret);
-			printf("\n匹配到以上 %d 个结果\n", ret);
+			int more = print_serial(arr, ret);
+			printf("\n 匹配到 %d 个结果\n", ret);
+			if (more)
+				printf("\n 结果过多，仅展示以上 %d 位\n", SEARCH_MAX);
 			del_select();
 			select = input_num(ret);
 			if (select == 0)
@@ -185,9 +187,11 @@ void serc_con(pcon pCon)
 		if (ret)
 		{
 			//找到了
-			print_serial(arr, ret);
+			int more = print_serial(arr, ret);
 			printf("\n>> 关键词: %s\n\n", str);
-			printf("共找到以上 %d 个结果\n", ret);
+			printf(" 共找到 %d 个结果\n", ret);
+			if (more)
+				printf("\n 结果过多，仅展示以上 %d 位\n", SEARCH_MAX);
 			serc_found();
 		}
 		else
@@ -239,8 +243,10 @@ void mdf_con(pcon pCon)
 				break;
 			}
 			//找到多个联系人，用户选择修改对象
-			print_serial(arr, ret);
-			printf("\n匹配到以上 %d 个结果\n", ret);
+			int more = print_serial(arr, ret);
+			printf("\n 匹配到 %d 个结果\n", ret);
+			if(more)
+				printf("\n 结果过多，仅展示以上 %d 位\n", SEARCH_MAX);
 			mdf_found();
 			select = input_num(ret);
 			if (select == 0)

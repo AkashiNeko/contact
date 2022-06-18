@@ -3,62 +3,64 @@
 void print_con(pcon pCon)
 {
 	int i = 0;
+	int more = 0;
 	if (pCon->member == 0)
 	{
 		printf("╭ ─────────────────────── ╮\n");
 		printf("│            空           │\n");
 		printf("╰ ─────────────────────── ╯\n");
+		return;
 	}
-	else
-	{
 #ifdef _SERIAL_
-		//带序号
-		printf(FR_UP2);
-		printf(FORMAT2, "序号", "姓名", "性别", "年龄", "电话", "地址");
-		printf(FR_MD2);
-		for (i = 0; i < pCon->member; i++)
-		{
-			SERIAL(i + 1);
-			PRINT_MEM(pCon->data[i].name, "%-12s");
-			PRINT_MEM(pCon->data[i].sex, "%-6s");
-			PRINT_MEM(pCon->data[i].age, "%-6s");
-			PRINT_MEM(pCon->data[i].tele, "%-12s");
-			PRINT_MEM(pCon->data[i].addr, "%-27s");
-			printf("│\n");
-		}
-		printf(FR_DW2);
-#else
-		//不带序号
-		printf(FR_UP);
-		printf(FORMAT, "姓名", "年龄", "性别", "电话", "地址");
-		printf(FR_MD);
-		for (i = 0; i < pCon->member; i++)
-		{
-			PRINT_MEM(pCon->data[i].name, "%-12s");
-			PRINT_MEM(pCon->data[i].sex, "%-6s");
-			PRINT_MEM(pCon->data[i].age, "%-6s");
-			PRINT_MEM(pCon->data[i].tele, "%-12s");
-			PRINT_MEM(pCon->data[i].addr, "%-27s");
-			printf("│\n");
-		}
-		printf(FR_DW);
-#endif
-	}
-} // print_con
-
-void print_name(pcon pCon)
-{
-	assert(pCon->member);
-	int i = 0;
-	printf("┌─────┬───────┐\n");
-	printf("│ %-4s│ %-6s│\n", "序号", "姓名");
-	printf("├─────┼───────┤\n");
+	//带序号
+	printf(FR_UP2);
+	printf(FORMAT2, "序号", "姓名", "性别", "年龄", "电话", "地址");
+	printf(FR_MD2);
 	for (i = 0; i < pCon->member; i++)
 	{
-		printf("│ %-4d│ %-6s│\n", i + 1, pCon->data[i].name);
+		if (i == PRINT_MAX)
+		{
+			printf(FORMAT2, "...", "...", "...", "...", "...", "...");
+			more = 1;
+			break;
+		}
+		SERIAL(i + 1);
+		PRINT_MEM(pCon->data[i].name, "%-12s");
+		PRINT_MEM(pCon->data[i].sex, "%-6s");
+		PRINT_MEM(pCon->data[i].age, "%-6s");
+		PRINT_MEM(pCon->data[i].tele, "%-12s");
+		PRINT_MEM(pCon->data[i].addr, "%-27s");
+		printf("│\n");
 	}
-	printf("└─────┴───────┘\n");
-} // print_name
+	printf(FR_DW2);
+#else
+	//不带序号
+	printf(FR_UP);
+	printf(FORMAT, "姓名", "年龄", "性别", "电话", "地址");
+	printf(FR_MD);
+	for (i = 0; i < pCon->member; i++)
+	{
+		if (i == PRINT_MAX)
+		{
+			printf(FORMAT, "...", "...", "...", "...", "...");
+			more = 1;
+			break;
+		}
+		PRINT_MEM(pCon->data[i].name, "%-12s");
+		PRINT_MEM(pCon->data[i].sex, "%-6s");
+		PRINT_MEM(pCon->data[i].age, "%-6s");
+		PRINT_MEM(pCon->data[i].tele, "%-12s");
+		PRINT_MEM(pCon->data[i].addr, "%-27s");
+		printf("│\n");
+	}
+	printf(FR_DW);
+#endif
+	printf(" 共 %d 位联系人\n", pCon->member);
+	if (more == 1)
+	{
+		printf("\n 当前仅展示 %d 位联系人\n", PRINT_MAX);
+	}
+} // print_con
 
 void print_peo(info peo)
 {
@@ -74,7 +76,7 @@ void print_peo(info peo)
 	printf(FR_DW);
 } // print_peo
 
-void print_serial(pInfo* arr, int num)
+int print_serial(pInfo* arr, int num)
 {
 	int i = 0;
 	printf(FR_UP2);
@@ -82,6 +84,12 @@ void print_serial(pInfo* arr, int num)
 	printf(FR_MD2);
 	for (i = 0; i < num; i++)
 	{
+		if (i == SEARCH_MAX)
+		{
+			printf(FORMAT2, "...", "...", "...", "...", "...", "...");
+			printf(FR_DW2);
+			return 1;
+		}
 		SERIAL(i + 1);
 		PRINT_MEM(arr[i]->name, "%-12s");
 		PRINT_MEM(arr[i]->sex, "%-6s");
@@ -91,6 +99,7 @@ void print_serial(pInfo* arr, int num)
 		printf("│\n");
 	}
 	printf(FR_DW2);
+	return 0;
 }
 
 int is_zero(const char* str)

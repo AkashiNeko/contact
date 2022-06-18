@@ -21,6 +21,12 @@
 //标题
 #define TITLE system("title 通讯录  -  By AkashiNeko")
 
+//主菜单表格联系人数上限
+#define PRINT_MAX 1000
+
+//搜索联系人人数上限
+#define SEARCH_MAX 9999
+
 //打印联系人信息
 #define PRINT_MEM(m, f) \
 if(is_zero(m))\
@@ -106,14 +112,11 @@ void to_file(pcon pCon, pInfo except);
 //打印所有联系人
 void print_con(pcon pCon);
 
-//打印所有联系人的名字（带序号）
-void print_name(pcon pCon);
-
 //打印单个成员表格
 void print_peo(info peo);
 
 //打印带序号的联系人列表
-void print_serial(pInfo* arr, int num);
+int print_serial(pInfo* arr, int num);
 
 //判断字符串是否为"0"
 int is_zero(const char* str);
