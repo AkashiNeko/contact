@@ -13,7 +13,6 @@ int main() {
     option select;
     contact con;
     con.data = NULL;
-    TITLE;
     // 用户选择
     do {
         // 初始化通讯录

@@ -1,8 +1,5 @@
-#pragma once
 #ifndef __CONTACT_H__
 #define __CONTACT_H__
-
-#define _CRT_SECURE_NO_WARNINGS
 
 #include <assert.h>
 #include <stdio.h>
@@ -17,10 +14,7 @@
 // #define _SERIAL_
 
 // 清屏
-#define CLS system("cls")
-
-// 标题
-#define TITLE system("title 通讯录  -  By AkashiNeko")
+#define CLS printf("\033[2J")
 
 // 主菜单表格联系人数上限
 #define PRINT_MAX 1000
