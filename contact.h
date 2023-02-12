@@ -4,221 +4,221 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
-//²âÊÔ
-//#define _DEBUG_
 
-//Ö÷²Ëµ¥±í¸ñ´øÐòºÅ
-//#define _SERIAL_
+// æµ‹è¯•
+// #define _DEBUG_
 
-//ÇåÆÁ
+// ä¸»èœå•è¡¨æ ¼å¸¦åºå·
+// #define _SERIAL_
+
+// æ¸…å±
 #define CLS system("cls")
 
-//±êÌâ
-#define TITLE system("title Í¨Ñ¶Â¼  -  By AkashiNeko")
+// æ ‡é¢˜
+#define TITLE system("title é€šè®¯å½•  -  By AkashiNeko")
 
-//Ö÷²Ëµ¥±í¸ñÁªÏµÈËÊýÉÏÏÞ
+// ä¸»èœå•è¡¨æ ¼è”ç³»äººæ•°ä¸Šé™
 #define PRINT_MAX 1000
 
-//ËÑË÷ÁªÏµÈËÈËÊýÉÏÏÞ
+// æœç´¢è”ç³»äººäººæ•°ä¸Šé™
 #define SEARCH_MAX 9999
 
-//´òÓ¡ÁªÏµÈËÐÅÏ¢
-#define PRINT_MEM(m, f) \
-if(is_zero(m))\
-	printf("©¦ "f, " ");\
-else\
-	printf("©¦ "f, m)
+// æ‰“å°è”ç³»äººä¿¡æ¯
+#define PRINT_MEM(m, f)      \
+    if (is_zero(m))          \
+        printf("â”‚ " f, " "); \
+    else                     \
+        printf("â”‚ " f, m)
 
-//ÐòºÅ
-#define SERIAL(num) printf("©¦ %-4d", num)
+// åºå·
+#define SERIAL(num) printf("â”‚ %-4d", num)
 
-//´òÓ¡ÐÂ½¨µÄÁªÏµÈËÐÅÏ¢
-#define PRINT_NEW(m, f, text) \
-if(is_zero(pNew->m))\
-	printf("\n"text": "f"\n", " ");\
-else\
-	printf("\n"text": "f"\n", pNew->m)
+// æ‰“å°æ–°å»ºçš„è”ç³»äººä¿¡æ¯
+#define PRINT_NEW(m, f, text)               \
+    if (is_zero(pNew->m))                   \
+        printf("\n" text ": " f "\n", " "); \
+    else                                    \
+        printf("\n" text ": " f "\n", pNew->m)
 
-//³ÉÔ±ÐÅÏ¢ÊäÈë¹ý³¤
-#define CPY(text, m, len) \
-strncpy(m, temp, len - 1);\
-if (strlen(temp) > strlen(m))\
-	printf("\n"text"¹ý³¤ (³¤¶È£¾%d)\n* ½«±»±£´æÎª %s\n", len - 1, m)
+// æˆå‘˜ä¿¡æ¯è¾“å…¥è¿‡é•¿
+#define CPY(text, m, len)         \
+    strncpy(m, temp, len - 1);    \
+    if (strlen(temp) > strlen(m)) \
+    printf("\n" text "è¿‡é•¿ (é•¿åº¦ï¼ž%d)\n* å°†è¢«ä¿å­˜ä¸º %s\n", len - 1, m)
 
-//¸ñÊ½
-#define FORMAT "©¦ %-12s©¦ %-6s©¦ %-6s©¦ %-12s©¦ %-27s©¦\n"
-//±í¸ñ±ß¿ò
-#define FR_UP "©°©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©Ð©¤©¤©¤©¤©¤©¤©¤©Ð©¤©¤©¤©¤©¤©¤©¤©Ð©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©Ð©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©´\n"
-#define FR_MD "©À©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©à©¤©¤©¤©¤©¤©¤©¤©à©¤©¤©¤©¤©¤©¤©¤©à©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©à©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©È\n"
-#define FR_DW "©¸©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¼\n"
+// æ ¼å¼
+#define FORMAT "â”‚ %-12sâ”‚ %-6sâ”‚ %-6sâ”‚ %-12sâ”‚ %-27sâ”‚\n"
+// è¡¨æ ¼è¾¹æ¡†
+#define FR_UP "â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”\n"
+#define FR_MD "â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤\n"
+#define FR_DW "â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜\n"
 
-//¸ñÊ½£¨´øÐòºÅ£©
-#define FORMAT2 "©¦ %-4s©¦ %-12s©¦ %-6s©¦ %-6s©¦ %-12s©¦ %-27s©¦\n"
-//±í¸ñ±ß¿ò£¨´øÐòºÅ£©
-#define FR_UP2 "©°©¤©¤©¤©¤©¤©Ð©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©Ð©¤©¤©¤©¤©¤©¤©¤©Ð©¤©¤©¤©¤©¤©¤©¤©Ð©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©Ð©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©´\n"
-#define FR_MD2 "©À©¤©¤©¤©¤©¤©à©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©à©¤©¤©¤©¤©¤©¤©¤©à©¤©¤©¤©¤©¤©¤©¤©à©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©à©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©È\n"
-#define FR_DW2 "©¸©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¼\n"
+// æ ¼å¼ï¼ˆå¸¦åºå·ï¼‰
+#define FORMAT2 "â”‚ %-4sâ”‚ %-12sâ”‚ %-6sâ”‚ %-6sâ”‚ %-12sâ”‚ %-27sâ”‚\n"
+// è¡¨æ ¼è¾¹æ¡†ï¼ˆå¸¦åºå·ï¼‰
+#define FR_UP2 "â”Œâ”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”\n"
+#define FR_MD2 "â”œâ”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤\n"
+#define FR_DW2 "â””â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜\n"
 
-enum max
-{
-	NAME = 13,
-	SEX = 7,
-	AGE = 7,
-	TELE = 13,
-	ADDR = 28,
+enum max {
+    NAME = 13,
+    SEX = 7,
+    AGE = 7,
+    TELE = 13,
+    ADDR = 28,
 };
 
-typedef enum options
-{
-	EXIT,
-	ADD,
-	DELETE,
-	SEARCH,
-	MODIFY,
-	SORT,
-}option;
+typedef enum options {
+    EXIT,
+    ADD,
+    DELETE,
+    SEARCH,
+    MODIFY,
+    SORT,
+} option;
 
-typedef struct Info
-{
-	char name[NAME];
-	char sex[SEX];
-	char age[AGE];
-	char tele[TELE];
-	char addr[ADDR];
-} info, * pInfo;
+typedef struct Info {
+    char name[NAME];
+    char sex[SEX];
+    char age[AGE];
+    char tele[TELE];
+    char addr[ADDR];
+} info, *pInfo;
 
-typedef struct con
-{
-	pInfo data;
-	int member;
-	int max;
-}contact, * pcon;
+typedef struct con {
+    pInfo data;
+    int member;
+    int max;
+} contact, *pcon;
 
-/******************** file.c º¯Êý¶¨Òå ********************/
+/******************** file.c å‡½æ•°å®šä¹‰ ********************/
 
-//¶ÁÎÄ¼þ
+// è¯»æ–‡ä»¶
 FILE* file(int mode);
 
-//ÖØÐÂÐ´Èëµ½ÎÄ¼þ£¨³ýÈ¥ pInfo except£©
+// é‡æ–°å†™å…¥åˆ°æ–‡ä»¶ï¼ˆé™¤åŽ» pInfo exceptï¼‰
 void to_file(pcon pCon, pInfo except);
 
-/********************* io.c º¯Êý¶¨Òå *********************/
+/******************** print.c å‡½æ•°å®šä¹‰ *******************/
 
-//´òÓ¡ËùÓÐÁªÏµÈË
+// æ‰“å°æ‰€æœ‰è”ç³»äºº
 void print_con(pcon pCon);
 
-//´òÓ¡µ¥¸ö³ÉÔ±±í¸ñ
+// æ‰“å°å•ä¸ªæˆå‘˜è¡¨æ ¼
 void print_peo(info peo);
 
-//´òÓ¡´øÐòºÅµÄÁªÏµÈËÁÐ±í
+// æ‰“å°å¸¦åºå·çš„è”ç³»äººåˆ—è¡¨
 int print_serial(pInfo* arr, int num);
 
-//ÅÐ¶Ï×Ö·û´®ÊÇ·ñÎª"0"
+// åˆ¤æ–­å­—ç¬¦ä¸²æ˜¯å¦ä¸º"0"
 int is_zero(const char* str);
 
-//ÊäÈëÒ»¸öÊý×Ö
+// è¾“å…¥ä¸€ä¸ªæ•°å­—
 int input_num(int max);
 
-//ÓÃ»§ÊäÈëÁªÏµÈËÐÅÏ¢
+// ç”¨æˆ·è¾“å…¥è”ç³»äººä¿¡æ¯
 int add_input(pInfo pNew, const pcon pCon);
 
-//ÊäÈëÐÕÃû
+// è¾“å…¥å§“å
 int name_input(pInfo pNew, const pcon pCon);
 
-//ÊäÈëÐÔ±ð
+// è¾“å…¥æ€§åˆ«
 void sex_input(pInfo pNew);
 
-//ÊäÈëÄêÁä
+// è¾“å…¥å¹´é¾„
 void age_input(pInfo pNew);
 
-//ÊäÈëµç»°
+// è¾“å…¥ç”µè¯
 void tele_input(pInfo pNew);
 
-//ÊäÈëµØÖ·
+// è¾“å…¥åœ°å€
 void addr_input(pInfo pNew);
 
-/******************** tips.c º¯Êý¶¨Òå ********************/
+/******************** tips.c å‡½æ•°å®šä¹‰ ********************/
 
-//´òÓ¡²Ëµ¥
+// æ‰“å°èœå•
 void pmenu();
 
-//Ìí¼ÓÊ§°Ü
+// æ·»åŠ å¤±è´¥
 void add_error();
 
-//Ìí¼Ó³É¹¦
+// æ·»åŠ æˆåŠŸ
 void add_succeed(const pInfo pNew);
 
-//¿Õ°×Í¨Ñ¶Â¼
+// ç©ºç™½é€šè®¯å½•
 void blank();
 
-//Ñ¡ÔñÉ¾³ý¶ÔÏó
+// é€‰æ‹©åˆ é™¤å¯¹è±¡
 void del_select();
 
-//È·ÈÏÉ¾³ý
+// ç¡®è®¤åˆ é™¤
 int del_confirm(const info peo);
 
-//ËÑË÷²»µ½½á¹û
+// æœç´¢ä¸åˆ°ç»“æžœ
 void serc_none();
 
-//ÕÒµ½ÁË
+// æ‰¾åˆ°äº†
 void serc_found();
 
-//ÐÞ¸ÄÁªÏµÈË - ËÑË÷²»µ½½á¹û
+// ä¿®æ”¹è”ç³»äºº - æœç´¢ä¸åˆ°ç»“æžœ
 void mdf_none();
 
-//ÐÞ¸ÄÁªÏµÈË - ÕÒµ½ÁË
+// ä¿®æ”¹è”ç³»äºº - æ‰¾åˆ°äº†
 void mdf_found();
 
-//ÐÞ¸ÄÁªÏµÈË - Ñ¡ÔñÒªÐÞ¸ÄµÄÐÅÏ¢
+// ä¿®æ”¹è”ç³»äºº - é€‰æ‹©è¦ä¿®æ”¹çš„ä¿¡æ¯
 void mdf_sel();
 
-/****************** contact.c º¯Êý¶¨Òå *******************/
+// é€‰æ‹©è¦æŽ’åºçš„ä¿¡æ¯
+void sort_sel();
 
-//³õÊ¼»¯Í¨Ñ¶Â¼
+/****************** contact.c å‡½æ•°å®šä¹‰ *******************/
+
+// åˆå§‹åŒ–é€šè®¯å½•
 void init_con(pcon pCon);
 
-//Ìí¼ÓÁªÏµÈË
+// æ·»åŠ è”ç³»äºº
 void add_con(pcon pCon);
 
-//É¾³ýÁªÏµÈË
+// åˆ é™¤è”ç³»äºº
 void del_con(pcon pCon);
 
-//ËÑË÷ÁªÏµÈË
+// æœç´¢è”ç³»äºº
 void serc_con(pcon pCon);
 
-//ÐÞ¸ÄÁªÏµÈË
+// ä¿®æ”¹è”ç³»äºº
 void mdf_con(pcon pCon);
 
-//ÅÅÐòÁªÏµÈË
+// æŽ’åºè”ç³»äºº
 void sort_con(pcon pCon);
 
-/******************* subpro.c º¯Êý¶¨Òå *******************/
+/******************* subpro.c å‡½æ•°å®šä¹‰ *******************/
 
-//À©ÈÝ
+// æ‰©å®¹
 void check_max(pcon pCon);
 
-//ÅÐ¶ÏÒªÌí¼ÓµÄÁªÏµÈËÊÇ·ñÒÑ´æÔÚ
+// åˆ¤æ–­è¦æ·»åŠ çš„è”ç³»äººæ˜¯å¦å·²å­˜åœ¨
 int is_name_repetition(const char* name, const pcon pCon);
 
-//Í¨Ñ¶Â¼Îª¿Õ
+// é€šè®¯å½•ä¸ºç©º
 int is_blank(pcon pCon);
 
-//Í¨¹ý¹Ø¼ü´ÊËÑË÷
+// é€šè¿‡å…³é”®è¯æœç´¢
 int search(pcon pCon, char* str, pInfo** pArr);
 
-//ÐÞ¸ÄÐÅÏ¢
+// ä¿®æ”¹ä¿¡æ¯
 void modify(pInfo peo, const pcon pCon);
 
-//ÅÅÐò - ÓÃÓÚº¯ÊýÖ¸Õë
-int cmp_name(const pInfo a, const pInfo b);
-int cmp_sex(const pInfo a, const pInfo b);
-int cmp_age(const pInfo a, const pInfo b);
-int cmp_tele(const pInfo a, const pInfo b);
-int cmp_addr(const pInfo a, const pInfo b);
+// æŽ’åº - ç”¨äºŽå‡½æ•°æŒ‡é’ˆ
+int cmp_name(const void* a, const void* b);
+int cmp_sex(const void* a, const void* b);
+int cmp_age(const void* a, const void* b);
+int cmp_tele(const void* a, const void* b);
+int cmp_addr(const void* a, const void* b);
 
 #endif

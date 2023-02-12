@@ -1,101 +1,89 @@
 #include "contact.h"
 
-void pmenu()
-{
-	printf("\n");
-	printf("  1.Ìí¼Ó   2.É¾³ı   3.ËÑË÷\n");
-	printf("  4.ĞŞ¸Ä   5.ÅÅĞò   0.ÍË³ö\n");
-	printf("----------------------------\n");
-} // pmenu
+void pmenu() {
+    printf("\n");
+    printf("  1.æ·»åŠ    2.åˆ é™¤   3.æœç´¢\n");
+    printf("  4.ä¿®æ”¹   5.æ’åº   0.é€€å‡º\n");
+    printf("----------------------------\n");
+}  // pmenu
 
-void add_error()
-{
-	printf("\nÌí¼ÓÁªÏµÈËÊ§°Ü¡£\n");
-	printf("* ÊÇ·ñÖØĞÂÌí¼Ó£¿\n");
-	printf("------------------\n");
-	printf(" 1.È·¶¨   0.È¡Ïû\n\n");
-} // add_error
+void add_error() {
+    printf("\næ·»åŠ è”ç³»äººå¤±è´¥ã€‚\n");
+    printf("* æ˜¯å¦é‡æ–°æ·»åŠ ï¼Ÿ\n");
+    printf("------------------\n");
+    printf(" 1.ç¡®å®š   0.å–æ¶ˆ\n\n");
+}  // add_error
 
-void add_succeed(const pInfo pNew)
-{
-	printf("ĞÂ½¨ÁªÏµÈË³É¹¦¡£\n");
-	PRINT_NEW(name, "%-12s", "ĞÕÃû");
-	PRINT_NEW(sex, "%-6s", "ĞÔ±ğ");
-	PRINT_NEW(age, "%-6s", "ÄêÁä");
-	PRINT_NEW(tele, "%-12s", "µç»°");
-	PRINT_NEW(addr, "%-27s", "µØÖ·");
-	printf("\n* ÊÇ·ñ¼ÌĞøÌí¼Ó£¿\n");
-	printf("-----------------\n");
-	printf(" 1.È·¶¨   0.·µ»Ø\n\n");
-} // add_succeed
+void add_succeed(const pInfo pNew) {
+    printf("æ–°å»ºè”ç³»äººæˆåŠŸã€‚\n");
+    PRINT_NEW(name, "%-12s", "å§“å");
+    PRINT_NEW(sex, "%-6s", "æ€§åˆ«");
+    PRINT_NEW(age, "%-6s", "å¹´é¾„");
+    PRINT_NEW(tele, "%-12s", "ç”µè¯");
+    PRINT_NEW(addr, "%-27s", "åœ°å€");
+    printf("\n* æ˜¯å¦ç»§ç»­æ·»åŠ ï¼Ÿ\n");
+    printf("-----------------\n");
+    printf(" 1.ç¡®å®š   0.è¿”å›\n\n");
+}  // add_succeed
 
-void blank()
-{
-	printf("µ±Ç°Í¨Ñ¶Â¼Îª¿Õ¡£\n\n");
-	printf("* ÊÇ·ñÌí¼ÓĞÂµÄÁªÏµÈË£¿\n");
-	printf("-----------------------\n");
-	printf(" 1.Ìí¼Ó   0.È¡Ïû\n\n");
-} // del_blank
+void blank() {
+    printf("å½“å‰é€šè®¯å½•ä¸ºç©ºã€‚\n\n");
+    printf("* æ˜¯å¦æ·»åŠ æ–°çš„è”ç³»äººï¼Ÿ\n");
+    printf("-----------------------\n");
+    printf(" 1.æ·»åŠ    0.å–æ¶ˆ\n\n");
+}  // del_blank
 
-void del_select()
-{
-	printf("\nÑ¡ÔñÒªÉ¾³ıµÄÁªÏµÈË\n\n");
-	printf("* ÊäÈëÁªÏµÈËµÄĞòºÅ£¨0.È¡Ïû£©\n");
-	printf("----------------------------\n");
-} // del_select
+void del_select() {
+    printf("\né€‰æ‹©è¦åˆ é™¤çš„è”ç³»äºº\n\n");
+    printf("* è¾“å…¥è”ç³»äººçš„åºå·ï¼ˆ0.å–æ¶ˆï¼‰\n");
+    printf("----------------------------\n");
+}  // del_select
 
-int del_confirm(const info peo)
-{
-	CLS;
-	print_peo(peo);
-	printf("\n* È·¶¨ÒªÉ¾³ı¸ÃÁªÏµÈËÂğ£¿\n");
-	printf("------------------------\n");
-	printf(" 1.È·¶¨   0.È¡Ïû\n\n");
-	return input_num(1);
-} // del_confirm
+int del_confirm(const info peo) {
+    CLS;
+    print_peo(peo);
+    printf("\n* ç¡®å®šè¦åˆ é™¤è¯¥è”ç³»äººå—ï¼Ÿ\n");
+    printf("------------------------\n");
+    printf(" 1.ç¡®å®š   0.å–æ¶ˆ\n\n");
+    return input_num(1);
+}  // del_confirm
 
-void serc_none()
-{
-	printf("\nÎ´ËÑË÷µ½ÈÎºÎ½á¹û¡£\n\n");
-	printf("* ÊÇ·ñÖØĞÂËÑË÷£¿\n");
-	printf("-------------------\n");
-	printf(" 1.È·¶¨   0.È¡Ïû\n\n");
-} // serc_none
+void serc_none() {
+    printf("\næœªæœç´¢åˆ°ä»»ä½•ç»“æœã€‚\n\n");
+    printf("* æ˜¯å¦é‡æ–°æœç´¢ï¼Ÿ\n");
+    printf("-------------------\n");
+    printf(" 1.ç¡®å®š   0.å–æ¶ˆ\n\n");
+}  // serc_none
 
-void serc_found()
-{
-	printf("\n* ÊÇ·ñ¼ÌĞøËÑË÷£¿\n");
-	printf("-------------------\n");
-	printf(" 1.¼ÌĞø   0.·µ»Ø\n\n");
-} // serc_found
+void serc_found() {
+    printf("\n* æ˜¯å¦ç»§ç»­æœç´¢ï¼Ÿ\n");
+    printf("-------------------\n");
+    printf(" 1.ç»§ç»­   0.è¿”å›\n\n");
+}  // serc_found
 
-void mdf_none()
-{
-	printf("\nÎ´ÕÒµ½¸ÃÁªÏµÈËĞÅÏ¢¡£\n\n");
-	printf("* ÊÇ·ñÖØĞÂËÑË÷£¿\n");
-	printf("-------------------\n");
-	printf(" 1.È·¶¨   0.È¡Ïû\n\n");
-} // mdf_none
+void mdf_none() {
+    printf("\næœªæ‰¾åˆ°è¯¥è”ç³»äººä¿¡æ¯ã€‚\n\n");
+    printf("* æ˜¯å¦é‡æ–°æœç´¢ï¼Ÿ\n");
+    printf("-------------------\n");
+    printf(" 1.ç¡®å®š   0.å–æ¶ˆ\n\n");
+}  // mdf_none
 
-void mdf_found()
-{
-	printf("Ñ¡ÔñÒªĞŞ¸ÄµÄÁªÏµÈË\n\n");
-	printf("* ÊäÈëÁªÏµÈËµÄĞòºÅ£¨0.È¡Ïû£©\n");
-	printf("----------------------------\n");
-} // mdf_found
+void mdf_found() {
+    printf("é€‰æ‹©è¦ä¿®æ”¹çš„è”ç³»äºº\n\n");
+    printf("* è¾“å…¥è”ç³»äººçš„åºå·ï¼ˆ0.å–æ¶ˆï¼‰\n");
+    printf("----------------------------\n");
+}  // mdf_found
 
-void mdf_sel()
-{
-	printf("\n* Ñ¡ÔñÒªĞŞ¸ÄµÄĞÅÏ¢\n\n");
-	printf("  1.ĞÕÃû   2.ĞÔ±ğ   3.ÄêÁä\n");
-	printf("  4.µç»°   5.µØÖ·   0.·µ»Ø\n");
-	printf("----------------------------\n");
-} // mdf_sel
+void mdf_sel() {
+    printf("\n* é€‰æ‹©è¦ä¿®æ”¹çš„ä¿¡æ¯\n\n");
+    printf("  1.å§“å   2.æ€§åˆ«   3.å¹´é¾„\n");
+    printf("  4.ç”µè¯   5.åœ°å€   0.è¿”å›\n");
+    printf("----------------------------\n");
+}  // mdf_sel
 
-void sort_sel()
-{
-	printf("* Ñ¡ÔñÒªÅÅĞòµÄĞÅÏ¢\n\n");
-	printf("  1.ĞÕÃû   2.ĞÔ±ğ   3.ÄêÁä\n");
-	printf("  4.µç»°   5.µØÖ·   0.·µ»Ø\n");
-	printf("----------------------------\n");
-} // mdf_sel
+void sort_sel() {
+    printf("* é€‰æ‹©è¦æ’åºçš„ä¿¡æ¯\n\n");
+    printf("  1.å§“å   2.æ€§åˆ«   3.å¹´é¾„\n");
+    printf("  4.ç”µè¯   5.åœ°å€   0.è¿”å›\n");
+    printf("----------------------------\n");
+}  // mdf_sel

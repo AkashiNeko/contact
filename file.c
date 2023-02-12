@@ -1,56 +1,50 @@
 #include "contact.h"
 
-FILE* file(int mode)
-{
-	//¶ÁÎÄ¼ş£¬·µ»ØÎÄ¼şÖ¸Õë
-	// new:
-	// 0 - ´ò¿ªÎÄ¼ş¶ÁĞ´
-	// 1 - ĞÂ½¨ÎÄ¼ş¶ÁĞ´
-	// 2 - ÔÚÄ©Î²×·¼Ó
-	FILE* pf = NULL;
-	switch (mode)
-	{
-	case 0:
-		pf = fopen("contact.dat", "r+");
-		if (pf != NULL)
-			break;
-		//Èç¹ûÎÄ¼ş²»´æÔÚÔòĞÂ½¨
-	case 1:
-		pf = fopen("contact.dat", "w+");
-		break;
-	case 2:
-		pf = fopen("contact.dat", "a");
-		break;
-	default:
-		break;
-	}
+FILE* file(int mode) {
+    // è¯»æ–‡ä»¶ï¼Œè¿”å›æ–‡ä»¶æŒ‡é’ˆ
+    //  new:
+    //  0 - æ‰“å¼€æ–‡ä»¶è¯»å†™
+    //  1 - æ–°å»ºæ–‡ä»¶è¯»å†™
+    //  2 - åœ¨æœ«å°¾è¿½åŠ 
+    FILE* pf = NULL;
+    switch (mode) {
+        case 0:
+            pf = fopen("contact.dat", "r+");
+            if (pf != NULL)
+                break;
+            // å¦‚æœæ–‡ä»¶ä¸å­˜åœ¨åˆ™æ–°å»º
+        case 1:
+            pf = fopen("contact.dat", "w+");
+            break;
+        case 2:
+            pf = fopen("contact.dat", "a");
+            break;
+        default:
+            break;
+    }
 
-	//ÎÄ¼ş²Ù×÷Ê§°Ü
-	if (pf == NULL)
-	{
-		CLS;
-		perror("ERROR: file \"contact.dat\"");
-		exit(114514);
-	}
-	return pf;
-} // file
+    // æ–‡ä»¶æ“ä½œå¤±è´¥
+    if (pf == NULL) {
+        CLS;
+        perror("ERROR: file \"contact.dat\"");
+        exit(114514);
+    }
+    return pf;
+}  // file
 
-void to_file(pcon pCon, pInfo except)
-{
-	//½«³ıÁËµØÖ·ÎªexceptÖ®ÍâµÄÁªÏµÈËĞ´Èëµ½Ò»¸öĞÂÎÄ¼şÖĞ
-	FILE* pf = file(1);
-	int i = 0;
-	for (i = 0; i < pCon->member; i++)
-	{
-		if (pCon->data + i == except)
-			continue;
-		fprintf(pf, "%s %s %s %s %s\n",
-			pCon->data[i].name,
-			pCon->data[i].sex,
-			pCon->data[i].age,
-			pCon->data[i].tele,
-			pCon->data[i].addr
-		);
-	}
-	fclose(pf);
-} // to_file
+void to_file(pcon pCon, pInfo except) {
+    // å°†é™¤äº†åœ°å€ä¸ºexceptä¹‹å¤–çš„è”ç³»äººå†™å…¥åˆ°ä¸€ä¸ªæ–°æ–‡ä»¶ä¸­
+    FILE* pf = file(1);
+    int i = 0;
+    for (i = 0; i < pCon->member; i++) {
+        if (pCon->data + i == except)
+            continue;
+        fprintf(pf, "%s %s %s %s %s\n",
+                pCon->data[i].name,
+                pCon->data[i].sex,
+                pCon->data[i].age,
+                pCon->data[i].tele,
+                pCon->data[i].addr);
+    }
+    fclose(pf);
+}  // to_file

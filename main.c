@@ -1,57 +1,54 @@
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 //
 //    date:   2022-6-16
-//    author: Akashi (·ú·ú)
+//    author: Akashi (æ°Ÿæ°Ÿ)
 //    github: https://github.com/AkashiNeko/contact
-//    QQ:     1006554341
+//    Mail:   akashineko@qq.com / akashinekof@gmail.com
 //
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 
 #include "contact.h"
 
-int main()
-{
-	option select;
-	contact con;
-	con.data = NULL;
-	TITLE;
-	//ÓÃ»§Ñ¡Ôñ
-	do
-	{
-		//³õÊ¼»¯Í¨Ñ¶Â¼
-		init_con(&con);
-		//´òÓ¡ËùÓĞÁªÏµÈË
-		print_con(&con);
-		//´òÓ¡²Ëµ¥Ñ¡Ïî
-		pmenu();
+int main() {
+    option select;
+    contact con;
+    con.data = NULL;
+    TITLE;
+    // ç”¨æˆ·é€‰æ‹©
+    do {
+        // åˆå§‹åŒ–é€šè®¯å½•
+        init_con(&con);
+        // æ‰“å°æ‰€æœ‰è”ç³»äºº
+        print_con(&con);
+        // æ‰“å°èœå•é€‰é¡¹
+        pmenu();
 #ifdef _DEBUG_
-		printf("\nmember: %d   max: %d\n\n", con.member, con.max);
+        printf("\nmember: %d   max: %d\n\n", con.member, con.max);
 #endif
-		select = input_num(5);
-		switch (select)
-		{
-		case EXIT:
-			CLS;
-			free(con.data);
-			return 0;
-		case ADD:
-			add_con(&con);
-			break;
-		case DELETE:
-			del_con(&con);
-			break;
-		case SEARCH:
-			serc_con(&con);
-			break;
-		case MODIFY:
-			mdf_con(&con);
-			break;
-		case SORT:
-			sort_con(&con);
-			break;
-		default:
-			break;
-		}
-	} while (1);
-	return 0;
+        select = input_num(5);
+        switch (select) {
+            case EXIT:
+                CLS;
+                free(con.data);
+                return 0;
+            case ADD:
+                add_con(&con);
+                break;
+            case DELETE:
+                del_con(&con);
+                break;
+            case SEARCH:
+                serc_con(&con);
+                break;
+            case MODIFY:
+                mdf_con(&con);
+                break;
+            case SORT:
+                sort_con(&con);
+                break;
+            default:
+                break;
+        }
+    } while (1);
+    return 0;
 }

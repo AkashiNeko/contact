@@ -1,9 +1,11 @@
-# 文件夹
+# folder
 Debug/
 Release/
 x64/
 image/
 .vs/
+bin/
 
-# 文件
+# file
 *.exe
+*.gitignore

@@ -1,282 +1,247 @@
 #include "contact.h"
 
-void init_con(pcon pCon)
-{
-	//³õÊ¼»¯Í¨Ñ¶Â¼
-	int scf_ret;
-	FILE* pf = file(0);
-	printf("¶ÁÈ¡ÁªÏµÈËÐÅÏ¢ÖÐ...\n");
-	//Èç¹û´æÓÐÉÏÒ»´ÎµÄÊý¾Ý
-	if (pCon->data != NULL)
-	{
-		free(pCon->data);
-		pCon->data = NULL;
-	}
-	//³õÊ¼ÈÝÁ¿
-	pCon->max = 4;
-	//³õÊ¼³ÉÔ±Êý
-	pCon->member = 0;
-	//¿ª±ÙÄÚ´æ¿Õ¼ä
-	pCon->data = (info*)malloc(pCon->max * sizeof(info));
-	if (pCon->data == NULL)
-	{
-		//¿ª±Ù¿Õ¼äÊ§°Ü
-		CLS;
-		perror("ERROR: malloc");
-		exit(114514);
-	}
-	//Ñ­»·¶ÁÎÄ¼þÖÐµÄÄÚÈÝ
-	do
-	{
-		scf_ret = fscanf(pf, "%s%s%s%s%s",
-			pCon->data[pCon->member].name,
-			pCon->data[pCon->member].sex,
-			pCon->data[pCon->member].age,
-			pCon->data[pCon->member].tele,
-			pCon->data[pCon->member].addr
-		);
-		//¶ÁÈ¡µ½ÎÄ¼þÄ©Î²
-		if (scf_ret != 5)
-			break;
-		//Í¨Ñ¶Â¼³ÉÔ±´ïµ½ÉÏÏÞÔòÀ©ÈÝ
-		if (++pCon->member == pCon->max)
-			check_max(pCon);
-	} while (1);
-	fclose(pf);
-	CLS;
-} // init_con
+void init_con(pcon pCon) {
+    // åˆå§‹åŒ–é€šè®¯å½•
+    int scf_ret;
+    FILE* pf = file(0);
+    printf("è¯»å–è”ç³»äººä¿¡æ¯ä¸­...\n");
+    // å¦‚æžœå­˜æœ‰ä¸Šä¸€æ¬¡çš„æ•°æ®
+    if (pCon->data != NULL) {
+        free(pCon->data);
+        pCon->data = NULL;
+    }
+    // åˆå§‹å®¹é‡
+    pCon->max = 4;
+    // åˆå§‹æˆå‘˜æ•°
+    pCon->member = 0;
+    // å¼€è¾Ÿå†…å­˜ç©ºé—´
+    pCon->data = (info*)malloc(pCon->max * sizeof(info));
+    if (pCon->data == NULL) {
+        // å¼€è¾Ÿç©ºé—´å¤±è´¥
+        CLS;
+        perror("ERROR: malloc");
+        exit(114514);
+    }
+    // å¾ªçŽ¯è¯»æ–‡ä»¶ä¸­çš„å†…å®¹
+    do {
+        scf_ret = fscanf(pf, "%s%s%s%s%s",
+                         pCon->data[pCon->member].name,
+                         pCon->data[pCon->member].sex,
+                         pCon->data[pCon->member].age,
+                         pCon->data[pCon->member].tele,
+                         pCon->data[pCon->member].addr);
+        // è¯»å–åˆ°æ–‡ä»¶æœ«å°¾
+        if (scf_ret != 5)
+            break;
+        // é€šè®¯å½•æˆå‘˜è¾¾åˆ°ä¸Šé™åˆ™æ‰©å®¹
+        if (++pCon->member == pCon->max)
+            check_max(pCon);
+    } while (1);
+    fclose(pf);
+    CLS;
+}  // init_con
 
-void add_con(pcon pCon)
-{
-	//Ìí¼ÓÁªÏµÈË
-	info new = { 0 };
-	int ret = 0;
-	int loop = 1;
-	int select = 1;
-	do
-	{
-		CLS;
-		printf(">> ÐÂ½¨ÁªÏµÈË\n\n");
-		//ÓÃ»§ÊäÈëÁªÏµÈËÐÅÏ¢
-		ret = add_input(&new, pCon);
-		if (ret)
-		{
-			//ÊäÈë¸ñÊ½ÕýÈ·
-			CLS;
-			add_succeed(&new);
-			//Ð´ÈëÎÄ¼þÖÐ
-			FILE* pf = file(2);
-			fprintf(pf, "%s %s %s %s %s\n",
-				new.name, new.sex, new.age, new.tele, new.addr
-			);
-			fclose(pf);
-		}
-		else
-		{
-			//ÊäÈë¸ñÊ½´íÎó
-			add_error();
-		}
-	} while (input_num(1));
-	CLS;
-} // add_con
+void add_con(pcon pCon) {
+    // æ·»åŠ è”ç³»äºº
+    info new = {0};
+    int ret = 0;
+    int loop = 1;
+    int select = 1;
+    do {
+        CLS;
+        printf(">> æ–°å»ºè”ç³»äºº\n\n");
+        // ç”¨æˆ·è¾“å…¥è”ç³»äººä¿¡æ¯
+        ret = add_input(&new, pCon);
+        if (ret) {
+            // è¾“å…¥æ ¼å¼æ­£ç¡®
+            CLS;
+            add_succeed(&new);
+            // å†™å…¥æ–‡ä»¶ä¸­
+            FILE* pf = file(2);
+            fprintf(pf, "%s %s %s %s %s\n",
+                    new.name, new.sex, new.age, new.tele, new.addr);
+            fclose(pf);
+        } else {
+            // è¾“å…¥æ ¼å¼é”™è¯¯
+            add_error();
+        }
+    } while (input_num(1));
+    CLS;
+}  // add_con
 
-void del_con(pcon pCon)
-{
-	int select = -1;
-	int ret;
-	char str[32];
-	char c;
-	pInfo* arr = NULL;
-	do
-	{
-		CLS;
-		if (arr != NULL)
-		{
-			free(arr);
-			arr = NULL;
-		}
-		printf(">> É¾³ýÁªÏµÈË\n\n");
-		//Í¨Ñ¶Â¼Îª¿ÕÊ±
-		if (is_blank(pCon))
-		{
-			CLS;
-			return;
-		}
-		printf("* ÊäÈëÒªÉ¾³ýµÄÁªÏµÈËÐÅÏ¢:> ");
-		scanf("%s", str);
-		str[ADDR - 1] = '\0';
-		//Çå¿Õ»º³åÇø
-		while ((c = getchar()) != EOF && c != '\n');
-		//²éÕÒ
-		ret = search(pCon, str, &arr);
-		if (ret)
-		{
-			//Ö»ÕÒµ½Ò»¸öÁªÏµÈË
-			if (ret == 1)
-			{
-				if (del_confirm(*arr[0]))
-					//ÖØÐÂÐ´Èëµ½ÎÄ¼þ
-					to_file(pCon, arr[0]);
-				break;
-			}
-			//ÕÒµ½¶à¸öÁªÏµÈË£¬ÓÃ»§Ñ¡ÔñÐÞ¸Ä¶ÔÏó
-			int more = print_serial(arr, ret);
-			printf("\n Æ¥Åäµ½ %d ¸ö½á¹û\n", ret);
-			if (more)
-				printf("\n ½á¹û¹ý¶à£¬½öÕ¹Ê¾ÒÔÉÏ %d Î»\n", SEARCH_MAX);
-			del_select();
-			select = input_num(ret);
-			if (select == 0)
-				break;
-			//ÐÞ¸ÄÐÅÏ¢
-			if (del_confirm(*arr[select - 1]))
-				//ÖØÐÂÐ´Èëµ½ÎÄ¼þ
-				to_file(pCon, arr[select - 1]);
-			break;
-		}
-		else
-		{
-			//ÕÒ²»µ½
-			mdf_none();
-		}
-	} while (input_num(1));
-	free(arr);
-	CLS;
-} // del_con
+void del_con(pcon pCon) {
+    int select = -1;
+    int ret;
+    char str[32];
+    char c;
+    pInfo* arr = NULL;
+    do {
+        CLS;
+        if (arr != NULL) {
+            free(arr);
+            arr = NULL;
+        }
+        printf(">> åˆ é™¤è”ç³»äºº\n\n");
+        // é€šè®¯å½•ä¸ºç©ºæ—¶
+        if (is_blank(pCon)) {
+            CLS;
+            return;
+        }
+        printf("* è¾“å…¥è¦åˆ é™¤çš„è”ç³»äººä¿¡æ¯:> ");
+        scanf("%s", str);
+        str[ADDR - 1] = '\0';
+        // æ¸…ç©ºç¼“å†²åŒº
+        while ((c = getchar()) != EOF && c != '\n')
+            ;
+        // æŸ¥æ‰¾
+        ret = search(pCon, str, &arr);
+        if (ret) {
+            // åªæ‰¾åˆ°ä¸€ä¸ªè”ç³»äºº
+            if (ret == 1) {
+                if (del_confirm(*arr[0]))
+                    // é‡æ–°å†™å…¥åˆ°æ–‡ä»¶
+                    to_file(pCon, arr[0]);
+                break;
+            }
+            // æ‰¾åˆ°å¤šä¸ªè”ç³»äººï¼Œç”¨æˆ·é€‰æ‹©ä¿®æ”¹å¯¹è±¡
+            int more = print_serial(arr, ret);
+            printf("\n åŒ¹é…åˆ° %d ä¸ªç»“æžœ\n", ret);
+            if (more)
+                printf("\n ç»“æžœè¿‡å¤šï¼Œä»…å±•ç¤ºä»¥ä¸Š %d ä½\n", SEARCH_MAX);
+            del_select();
+            select = input_num(ret);
+            if (select == 0)
+                break;
+            // ä¿®æ”¹ä¿¡æ¯
+            if (del_confirm(*arr[select - 1]))
+                // é‡æ–°å†™å…¥åˆ°æ–‡ä»¶
+                to_file(pCon, arr[select - 1]);
+            break;
+        } else {
+            // æ‰¾ä¸åˆ°
+            mdf_none();
+        }
+    } while (input_num(1));
+    free(arr);
+    CLS;
+}  // del_con
 
-void serc_con(pcon pCon)
-{
-	//ËÑË÷ÁªÏµÈË
-	int ret;
-	char str[32];
-	char c;
-	pInfo* arr = NULL;
-	do
-	{
-		CLS;
-		if (arr != NULL)
-		{
-			free(arr);
-			arr = NULL;
-		}
-		printf(">> ËÑË÷ÁªÏµÈË\n\n");
-		//Í¨Ñ¶Â¼Îª¿ÕÊ±
-		if (is_blank(pCon))
-		{
-			CLS;
-			return;
-		}
-		printf("* ÊäÈëÒªËÑË÷µÄÄÚÈÝ:> ");
-		scanf("%s", str);
-		str[ADDR - 1] = '\0';
-		//Çå¿Õ»º³åÇø
-		while ((c = getchar()) != EOF && c != '\n');
-		//²éÕÒ
-		ret = search(pCon, str, &arr);
-		if (ret)
-		{
-			//ÕÒµ½ÁË
-			int more = print_serial(arr, ret);
-			printf("\n>> ¹Ø¼ü´Ê: %s\n\n", str);
-			printf(" ¹²ÕÒµ½ %d ¸ö½á¹û\n", ret);
-			if (more)
-				printf("\n ½á¹û¹ý¶à£¬½öÕ¹Ê¾ÒÔÉÏ %d Î»\n", SEARCH_MAX);
-			serc_found();
-		}
-		else
-		{
-			//ÕÒ²»µ½
-			serc_none();
-		}
-	} while (input_num(1));
-	free(arr);
-	CLS;
-} // serc_con
+void serc_con(pcon pCon) {
+    // æœç´¢è”ç³»äºº
+    int ret;
+    char str[32];
+    char c;
+    pInfo* arr = NULL;
+    do {
+        CLS;
+        if (arr != NULL) {
+            free(arr);
+            arr = NULL;
+        }
+        printf(">> æœç´¢è”ç³»äºº\n\n");
+        // é€šè®¯å½•ä¸ºç©ºæ—¶
+        if (is_blank(pCon)) {
+            CLS;
+            return;
+        }
+        printf("* è¾“å…¥è¦æœç´¢çš„å†…å®¹:> ");
+        scanf("%s", str);
+        str[ADDR - 1] = '\0';
+        // æ¸…ç©ºç¼“å†²åŒº
+        while ((c = getchar()) != EOF && c != '\n')
+            ;
+        // æŸ¥æ‰¾
+        ret = search(pCon, str, &arr);
+        if (ret) {
+            // æ‰¾åˆ°äº†
+            int more = print_serial(arr, ret);
+            printf("\n>> å…³é”®è¯: %s\n\n", str);
+            printf(" å…±æ‰¾åˆ° %d ä¸ªç»“æžœ\n", ret);
+            if (more)
+                printf("\n ç»“æžœè¿‡å¤šï¼Œä»…å±•ç¤ºä»¥ä¸Š %d ä½\n", SEARCH_MAX);
+            serc_found();
+        } else {
+            // æ‰¾ä¸åˆ°
+            serc_none();
+        }
+    } while (input_num(1));
+    free(arr);
+    CLS;
+}  // serc_con
 
-void mdf_con(pcon pCon)
-{
-	//ÐÞ¸ÄÁªÏµÈË
-	int ret;
-	char str[32];
-	char c;
-	pInfo* arr = NULL;
-	do
-	{
-		if (arr != NULL)
-		{
-			free(arr);
-			arr = NULL;
-		}
-		int select;
-		CLS;
-		printf(">> ÐÞ¸ÄÁªÏµÈË\n\n");
-		//Í¨Ñ¶Â¼Îª¿ÕÊ±
-		if (is_blank(pCon))
-		{
-			CLS;
-			return;
-		}
-		printf("* ÊäÈëÒªÐÞ¸ÄµÄÁªÏµÈËÐÅÏ¢:> ");
-		scanf("%s", str);
-		str[ADDR - 1] = '\0';
-		//Çå¿Õ»º³åÇø
-		while ((c = getchar()) != EOF && c != '\n');
-		//²éÕÒ
-		ret = search(pCon, str, &arr);
-		if (ret)
-		{
-			//Ö»ÕÒµ½Ò»¸öÁªÏµÈË
-			if (ret == 1)
-			{
-				modify(arr[0], pCon);
-				break;
-			}
-			//ÕÒµ½¶à¸öÁªÏµÈË£¬ÓÃ»§Ñ¡ÔñÐÞ¸Ä¶ÔÏó
-			int more = print_serial(arr, ret);
-			printf("\n Æ¥Åäµ½ %d ¸ö½á¹û\n", ret);
-			if(more)
-				printf("\n ½á¹û¹ý¶à£¬½öÕ¹Ê¾ÒÔÉÏ %d Î»\n", SEARCH_MAX);
-			mdf_found();
-			select = input_num(ret);
-			if (select == 0)
-				break;
-			//ÐÞ¸ÄÐÅÏ¢
-			modify(arr[select - 1], pCon);
-			break;
-		}
-		else
-		{
-			//ÕÒ²»µ½
-			mdf_none();
-		}
-	} while (input_num(1));
-	free(arr);
-	CLS;
-} // mdf_con
+void mdf_con(pcon pCon) {
+    // ä¿®æ”¹è”ç³»äºº
+    int ret;
+    char str[32];
+    char c;
+    pInfo* arr = NULL;
+    do {
+        if (arr != NULL) {
+            free(arr);
+            arr = NULL;
+        }
+        int select;
+        CLS;
+        printf(">> ä¿®æ”¹è”ç³»äºº\n\n");
+        // é€šè®¯å½•ä¸ºç©ºæ—¶
+        if (is_blank(pCon)) {
+            CLS;
+            return;
+        }
+        printf("* è¾“å…¥è¦ä¿®æ”¹çš„è”ç³»äººä¿¡æ¯:> ");
+        scanf("%s", str);
+        str[ADDR - 1] = '\0';
+        // æ¸…ç©ºç¼“å†²åŒº
+        while ((c = getchar()) != EOF && c != '\n')
+            ;
+        // æŸ¥æ‰¾
+        ret = search(pCon, str, &arr);
+        if (ret) {
+            // åªæ‰¾åˆ°ä¸€ä¸ªè”ç³»äºº
+            if (ret == 1) {
+                modify(arr[0], pCon);
+                break;
+            }
+            // æ‰¾åˆ°å¤šä¸ªè”ç³»äººï¼Œç”¨æˆ·é€‰æ‹©ä¿®æ”¹å¯¹è±¡
+            int more = print_serial(arr, ret);
+            printf("\n åŒ¹é…åˆ° %d ä¸ªç»“æžœ\n", ret);
+            if (more)
+                printf("\n ç»“æžœè¿‡å¤šï¼Œä»…å±•ç¤ºä»¥ä¸Š %d ä½\n", SEARCH_MAX);
+            mdf_found();
+            select = input_num(ret);
+            if (select == 0)
+                break;
+            // ä¿®æ”¹ä¿¡æ¯
+            modify(arr[select - 1], pCon);
+            break;
+        } else {
+            // æ‰¾ä¸åˆ°
+            mdf_none();
+        }
+    } while (input_num(1));
+    free(arr);
+    CLS;
+}  // mdf_con
 
-void sort_con(pcon pCon)
-{
-	//ÅÅÐòÁªÏµÈË
-	int ret;
-	char c;
-	int select;
-	int (*pf[5])(const pInfo, const pInfo) = {
-		cmp_name, cmp_sex, cmp_age, cmp_tele, cmp_addr
-	};
-	CLS;
-	printf(">> ÅÅÐòÁªÏµÈË\n\n");
-	//Í¨Ñ¶Â¼Îª¿ÕÊ±
-	if (is_blank(pCon))
-	{
-		CLS;
-		return;
-	}
-	sort_sel();
-	select = input_num(5);
-	if (select == 0)
-		return;
-	printf("\nÕýÔÚÅÅÐòÖÐ...");
-	qsort(pCon->data, pCon->member, sizeof(info), pf[select - 1]);
-	to_file(pCon, NULL);
-	CLS;
-} // sort_con
+void sort_con(pcon pCon) {
+    // æŽ’åºè”ç³»äºº
+    int ret;
+    char c;
+    int select;
+    int (*pf[])(const void*, const void*) = { cmp_name, cmp_sex, cmp_age, cmp_tele, cmp_addr};
+    CLS;
+    printf(">> æŽ’åºè”ç³»äºº\n\n");
+    // é€šè®¯å½•ä¸ºç©ºæ—¶
+    if (is_blank(pCon)) {
+        CLS;
+        return;
+    }
+    sort_sel();
+    select = input_num(5);
+    if (select == 0)
+        return;
+    printf("\næ­£åœ¨æŽ’åºä¸­...");
+    qsort(pCon->data, pCon->member, sizeof(info), pf[select - 1]);
+    to_file(pCon, NULL);
+    CLS;
+}  // sort_con
