@@ -17,7 +17,7 @@
   #### 1. 克隆仓库
 
   ```bash
-  https://github.com/AkashiNeko/contact.git
+  git clone https://github.com/AkashiNeko/contact.git
   cd ./contact
   ```
 
